@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Personalized Plan • {{ username }}</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --accent: #f59e0b;
+      --success: #10b981;
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --card-alt: #162032;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #334155;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 24px 16px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .top-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .btn-link {
+      color: #93c5fd;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 16px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    .btn-link:hover {
+      background: #334155;
+      color: #fff;
+    }
+    .user-profile-banner {
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.15), rgba(168, 85, 247, 0.15));
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .user-profile-info {
+      font-size: 15px;
+    }
+    .user-tag {
+      display: inline-block;
+      background: #1e293b;
+      border: 1px solid var(--border);
+      color: #cbd5e1;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-right: 8px;
+      margin-top: 4px;
+      font-size: 13px;
+    }
+    .section-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .original-title { color: #60a5fa; }
+    .nutrition-title { color: #f59e0b; }
+    .updated-title { color: #34d399; }
+
+    /* PRE Block Formatting as specified */
+    pre {
+      background-color: #0b1120;
+      color: #e2e8f0;
+      font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', Courier, monospace;
+      font-size: 14px;
+      line-height: 1.6;
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid #1e293b;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      overflow-x: auto;
+    }
+
+    .nutrition-box {
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-left: 5px solid #f59e0b;
+      padding: 16px 20px;
+      border-radius: 8px;
+      color: #fef3c7;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    .nutrition-badge {
+      display: inline-block;
+      background: #f59e0b;
+      color: #000;
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+
+    .feedback-form-box {
+      background: var(--card-alt);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .feedback-textarea {
+      width: 100%;
+      min-height: 85px;
+      padding: 12px;
+      background: #0b1120;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+      resize: vertical;
+      margin-top: 10px;
+      margin-bottom: 12px;
+    }
+    .feedback-textarea:focus {
+      border-color: #3b82f6;
+    }
+    .btn-feedback {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn-feedback:hover {
+      opacity: 0.9;
+    }
+    .quick-feedback {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .quick-chip {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      color: #94a3b8;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .quick-chip:hover {
+      background: rgba(255,255,255,0.1);
+      color: #f8fafc;
+    }
+    .alert-error {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid #ef4444;
+      color: #fca5a5;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top-actions">
+      <a href="/" class="btn-link">← Generate Another Plan</a>
+      <a href="/view-all-users" class="btn-link">🛡️ Admin View: All Users</a>
+    </div>
+
+    {% if error %}
+    <div class="alert-error">
+      <strong>Error:</strong> {{ error }}
+    </div>
+    {% endif %}
+
+    <!-- User Profile Banner -->
+    <div class="user-profile-banner">
+      <div class="user-profile-info">
+        <h2 style="font-size: 1.3rem; margin-bottom: 4px;">🏋️ {{ username }}</h2>
+        <div>
+          <span class="user-tag">User ID: #{{ user_id }}</span>
+          {% if age %}<span class="user-tag">Age: {{ age }} yrs</span>{% endif %}
+          {% if weight %}<span class="user-tag">Weight: {{ weight }} kg</span>{% endif %}
+          <span class="user-tag">Goal: {{ goal | title }}</span>
+          <span class="user-tag">Intensity: {{ intensity | title }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1. Original 7-Day Workout Plan formatted using <pre> blocks -->
+    <div class="section-card">
+      <h3 class="section-title original-title">
+        📅 7-Day Workout Plan (Original)
+      </h3>
+      <pre>{{ workout_plan }}</pre>
+    </div>
+
+    <!-- 2. Nutrition Tip displayed beneath the workout plan in result.html -->
+    <div class="section-card">
+      <h3 class="section-title nutrition-title">
+        🥗 Nutrition & Recovery Tip (Gemini Flash)
+      </h3>
+      <div class="nutrition-box">
+        <div class="nutrition-badge">Tailored to {{ goal }}</div>
+        <p>{{ nutrition_tip }}</p>
+      </div>
+    </div>
+
+    <!-- 3. Updated Plan Section if feedback has been submitted -->
+    {% if updated_plan %}
+    <div class="section-card" style="border-color: rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.03);">
+      <h3 class="section-title updated-title">
+        ✨ Updated Workout Plan (Revised via Feedback)
+      </h3>
+      {% if feedback %}
+      <p style="color: #6ee7b7; font-size: 13px; margin-bottom: 12px;">
+        <strong>Applied Feedback:</strong> "{{ feedback }}"
+      </p>
+      {% endif %}
+      <pre>{{ updated_plan }}</pre>
+    </div>
+    {% endif %}
+
+    <!-- 4. Feedback-Based Plan Updating Form -->
+    <div class="feedback-form-box">
+      <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 6px;">
+        💬 Revise This Workout Plan
+      </h3>
+      <p style="color: var(--text-muted); font-size: 14px;">
+        Submit adjustments (e.g. <em>"Add 15 mins yoga"</em>, <em>"Include more cardio"</em>, <em>"Swap bench press for dumbbells"</em>). Gemini will revise the plan while keeping your original plan intact in the database.
+      </p>
+
+      <form action="/submit-feedback" method="POST">
+        <input type="hidden" name="user_id" value="{{ user_id }}">
+        <input type="hidden" name="nutrition_tip" value="{{ nutrition_tip }}">
+        <textarea
+          class="feedback-textarea"
+          name="feedback"
+          id="feedback-input"
+          placeholder="Type your adjustments or feedback here..."
+          required
+        ></textarea>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+          <button type="submit" class="btn-feedback">⚡ Apply Feedback & Update Plan</button>
+          <div class="quick-feedback">
+            <span class="quick-chip" onclick="document.getElementById('feedback-input').value='Add 15 minutes of recovery yoga on Day 7'">+ Add Sunday Yoga</span>
+            <span class="quick-chip" onclick="document.getElementById('feedback-input').value='Increase cardio and add 10 min HIIT at the end of workouts'">+ More Cardio/HIIT</span>
+            <span class="quick-chip" onclick="document.getElementById('feedback-input').value='Replace barbell squats with bodyweight lunges and leg press'">+ Joint-Friendly Substitutions</span>
+          </div>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</body>
+</html>

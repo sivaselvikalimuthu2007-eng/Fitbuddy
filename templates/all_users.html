@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin View • All Users & Plans</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #334155;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 24px 16px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #60a5fa;
+    }
+    .nav-btn {
+      color: #93c5fd;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 16px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .table-container {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow-x: auto;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #162032;
+      color: #94a3b8;
+      font-weight: 600;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 0.05em;
+    }
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .badge-goal {
+      background: rgba(37, 99, 235, 0.2);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+    }
+    .badge-intensity {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fcd34d;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+    }
+    .badge-updated {
+      background: rgba(16, 185, 129, 0.2);
+      color: #6ee7b7;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+    .badge-none {
+      background: rgba(148, 163, 184, 0.1);
+      color: #94a3b8;
+    }
+    details summary {
+      cursor: pointer;
+      color: #60a5fa;
+      font-weight: 600;
+      outline: none;
+      user-select: none;
+    }
+    details[open] summary {
+      margin-bottom: 8px;
+    }
+    pre.table-pre {
+      background: #0b1120;
+      color: #cbd5e1;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      max-height: 250px;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+    }
+    .nutrition-mini {
+      background: rgba(245, 158, 11, 0.08);
+      border-left: 3px solid #f59e0b;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: #fef3c7;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div>
+        <h1>🛡️ Admin View: All Users & Plans</h1>
+        <p style="color: var(--text-muted); font-size: 14px;">Review all database records, original 7-day plans, nutrition advice, and feedback revisions.</p>
+      </div>
+      <div>
+        <a href="/" class="nav-btn">+ Generate New Plan</a>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>User ID</th>
+            <th>Name & Stats</th>
+            <th>Goal & Intensity</th>
+            <th>Original 7-Day Plan</th>
+            <th>Updated Plan (Feedback)</th>
+            <th>Flash Nutrition Tip</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+          <tr>
+            <td>
+              <strong>#{{ user.id }}</strong>
+            </td>
+            <td>
+              <div style="font-weight: 600; color: #fff;">{{ user.name }}</div>
+              <div style="color: var(--text-muted); font-size: 12px;">
+                Age: {{ user.age }} • {{ user.weight }} kg
+              </div>
+            </td>
+            <td>
+              <div><span class="badge badge-goal">{{ user.goal | title }}</span></div>
+              <div style="margin-top: 4px;"><span class="badge badge-intensity">{{ user.intensity | title }}</span></div>
+            </td>
+            <td style="max-width: 320px;">
+              {% if user.original_plan %}
+              <details>
+                <summary>View Original Plan</summary>
+                <pre class="table-pre">{{ user.original_plan }}</pre>
+              </details>
+              {% else %}
+              <span class="badge badge-none">No Plan Saved</span>
+              {% endif %}
+            </td>
+            <td style="max-width: 320px;">
+              {% if user.updated_plan %}
+              <div>
+                <span class="badge badge-updated">✓ Revised via Feedback</span>
+                {% if user.last_feedback %}
+                <div style="font-size: 11px; color: #94a3b8; margin: 4px 0;">Feedback: "{{ user.last_feedback }}"</div>
+                {% endif %}
+                <details>
+                  <summary>View Updated Plan</summary>
+                  <pre class="table-pre">{{ user.updated_plan }}</pre>
+                </details>
+              </div>
+              {% else %}
+              <span class="badge badge-none">No Updates</span>
+              {% endif %}
+            </td>
+            <td style="max-width: 240px;">
+              {% if user.nutrition_tip %}
+              <div class="nutrition-mini">{{ user.nutrition_tip }}</div>
+              {% else %}
+              <span style="color: var(--text-muted); font-size: 12px;">None</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="6" style="text-align: center; padding: 40px; color: var(--text-muted);">
+              No users stored in database yet. <a href="/" style="color: #60a5fa;">Generate a workout plan</a> to create the first record!
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

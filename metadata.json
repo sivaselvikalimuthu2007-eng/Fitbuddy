@@ -1,0 +1,6 @@
+{
+  "name": "AI Workout & Nutrition Plan Generator",
+  "description": "Generate personalized 7-day workout plans with Gemini, nutrition advice with Gemini Flash, refine workouts with feedback, and manage user records with admin view.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
